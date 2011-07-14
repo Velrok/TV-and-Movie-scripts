@@ -1,11 +1,13 @@
 #!/bin/bash
 
 # directorys
+# configure as needed
 downloadDir="/Users/velrok/Downloads/transmission/finished"
 workingDir="/Users/velrok/Downloads/transmission/workingDir"
 logDir="/Users/velrok/Downloads/transmission"
 destinationDir="/Users/velrok/Movies/Serien"
 
+# from here on everything should be OK
 logFile="$logDir/finishedDownloadScript.log"
 errorsFile="$logDir/finishedDownloadScript.errors"
 
