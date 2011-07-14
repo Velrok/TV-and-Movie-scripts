@@ -26,7 +26,7 @@ src = sys.argv[1]
 dest = sys.argv[2]
 
 # tvnamer default pattern
-pattern = '([\w ]*) - \[(\d+)x(\d+)\] (.*)'
+pattern = '([\w ()\d]*) - \[(\d+)x(\d+)\] (.*)'
 reg_ex = re.compile(pattern)
 
 
@@ -35,10 +35,23 @@ def move(filename):
 	Moves the given filename into the destination dir. Creating subdirectorys for
 	series name and season.
 	"""
+	#print "processing file " + filename
 	m = re.search(reg_ex, filename)
+	
+	if(not m):
+		print "can't process filename " + filename
+		return
+	
 	name = m.group(1)	# get series name
+	
+	if(not name):
+		print 'empty name for ' + filename
+		return
 	season = "Season"
 	season += m.group(2) # get season number
+	
+	#print "found name: " + name
+	#print "and season: " + season
 	
 	destination_directory = os.path.join(dest, name, season)	#create desination path
 	target = os.path.join(destination_directory, filename)		#create target filename
@@ -48,6 +61,8 @@ def move(filename):
 	if(not os.path.exists(destination_directory)):
 		os.makedirs(destination_directory)
 	#os.link(src_file,target)
+	#print "moving " + src_file
+	#print "to " + target
 	
 	shutil.move(src_file, target)		# move the file
 	

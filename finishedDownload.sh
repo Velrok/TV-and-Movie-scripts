@@ -12,16 +12,17 @@ echo "creating log file: $logFile"
 date > $logFile
 
 echo "creating working Dir: $workingDir"
-mkdir $workingDir 2>> $logFile
+mkdir $workingDir
 cd $workingDir
 
 echo "creating hard links"
-ls $downloadDir | xargs -I {} ln $downloadDir/{} 2>> $logFile
+pwd
+ls $downloadDir | xargs -I {} ln $downloadDir/{} 2>> /dev/null
 
 echo "renaming files"
-tvnamer $workingDir 2>> $logFile
+tvnamer $workingDir
 
 echo "moving episodes"
-moveEpisodes.py $workingDir $destinationDir 2>> $logFile
+moveEpisodes.py $workingDir $destinationDir
 
 echo "all DONE"
