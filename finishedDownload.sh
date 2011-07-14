@@ -25,4 +25,7 @@ tvnamer $workingDir
 echo "moving episodes"
 moveEpisodes.py $workingDir $destinationDir
 
+echo "cleaning working dir"
+rm -rf $workingDir
+
 echo "all DONE"
