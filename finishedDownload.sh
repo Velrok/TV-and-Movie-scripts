@@ -7,6 +7,13 @@ logDir="/Users/velrok/Downloads/transmission"
 destinationDir="/Users/velrok/Movies/Serien"
 
 logFile="$logDir/finishedDownloadScript.log"
+errorsFile="$logDir/finishedDownloadScript.errors"
+
+growlIcon="Python"
+growlTitle=$0
+
+echo "removing erros file"
+rm $errorsFile
 
 echo "creating log file: $logFile"
 date > $logFile
@@ -17,15 +24,23 @@ cd $workingDir
 
 echo "creating hard links"
 pwd
-ls $downloadDir | xargs -I {} ln $downloadDir/{} 2>> /dev/null
+ls $downloadDir | xargs -I {} ln $downloadDir/{} 2>> $errorsFile
 
 echo "renaming files"
-tvnamer $workingDir
+growlnotify -a $growlIcon -m "renaming files" $growlTitle
+tvnamer $workingDir 2>> $errorsFile
 
 echo "moving episodes"
-moveEpisodes.py $workingDir $destinationDir
+growlnotify -a $growlIcon -m "moving episodes" $growlTitle
+moveEpisodes.py $workingDir $destinationDir  2>> $errorsFile
 
 echo "cleaning working dir"
 rm -rf $workingDir
 
 echo "all DONE"
+growlnotify -a $growlIcon -m "all done" $growlTitle
+
+if [ -e $errorsFile ]
+then
+	cat $errorsFile | growlnotify -a $growlIcon "$growlTitle Errors"
+fi
