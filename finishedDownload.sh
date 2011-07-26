@@ -30,7 +30,9 @@ ls $downloadDir | xargs -I {} ln $downloadDir/{} 2>> $errorsFile
 
 echo "renaming files"
 growlnotify -a $growlIcon -m "renaming files" $growlTitle
-tvnamer $workingDir 2>> $errorsFile
+#tvnamer $workingDir 2>> $errorsFile
+find $workingDir/* | xargs -I+ tvnamer +
+
 
 echo "moving episodes"
 growlnotify -a $growlIcon -m "moving episodes" $growlTitle
